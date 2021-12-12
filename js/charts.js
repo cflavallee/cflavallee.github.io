@@ -58,18 +58,19 @@ function buildCharts(sample) {
   // 2. Use d3.json to load and retrieve the samples.json file 
   d3.json("samples.json").then((data) => {
     // 3. Create a variable that holds the samples array. 
-    var samples = data.metadata;
-
+    var samples = data.samples;
+    console.log(samples)
     // 4. Create a variable that filters the samples for the object with the desired sample number.
-    var samplesArray = samples.filter(sampleObj => sampleObj.id[0] == sample);
-
+    var samplesFilter = samples.filter(sampleObj => sampleObj.id == sample);
+    console.log(samplesFilter)
     //  5. Create a variable that holds the first sample in the array.
-    //var result = samplesArray[0];
+     result = samplesFilter[0];
+     console.log(result)
 
     // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
-    var otu_ids = samples.filter(sampleObj => sampleObj.otu_ids == sample);
-    var otu_labels = samples.filter(sampleObj => sampleObj.otu_labels == sample);
-    var sample_values = samples.filter(sampleObj => sampleObj.sample_values == sample);
+    var otu_ids = result.otu_ids;
+    var otu_labels = result.otu_labels;
+    var sample_values = result.sample_values;
     console.log(otu_ids)
     console.log(otu_labels)
     console.log(sample_values)
@@ -78,22 +79,21 @@ function buildCharts(sample) {
     // Hint: Get the the top 10 otu_ids and map them in descending order  
     //  so the otu_ids with the most bacteria are last. 
 
-    var yticks = otu_ids.map(sampleObj => sampleObj.otu_ids == sample).slice();
-
+    var yticks = sample_values.sort((a,b) => b-a).slice(0,10);
+    console.log(yticks)
     // 8. Create the trace for the bar chart. 
-    var barData = {
+    var barData = [{
       x: sample_values,
       y: yticks,
+      text: otu_labels,
       type: 'bar',
       orientation: 'h'
-    };
+    }];
     // 9. Create the layout for the bar chart. 
-    var barLayout = {title: "OTU Samples",
-          xaxis: {title: "Sample Numbers"},
-          yaxis: {title: "Sample ID"}
-      
+    var barLayout = {title: "Top 10 Bacteria Samples Found"
+               
     };
-    // 10. Use Plotly to plot the data with the layout. 
+    //10. Use Plotly to plot the data with the layout. 
     Plotly.newPlot("bar", barData, barLayout)
   });
 }

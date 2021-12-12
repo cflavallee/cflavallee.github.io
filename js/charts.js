@@ -79,7 +79,7 @@ function buildCharts(sample) {
     // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
     var otu_ids = result.otu_ids;
     var otu_labels = result.otu_labels;
-    var sample_values = result.sample_values.slice(0,10);
+    var sample_values = result.sample_values;
     console.log(otu_ids)
     console.log(otu_labels)
     console.log(sample_values)
@@ -98,7 +98,7 @@ function buildCharts(sample) {
     console.log(typeof yticks)
     // 8. Create the trace for the bar chart. 
     var barData = [{
-      x: sample_values,
+      x: sample_values.slice(0,10),
       y: yticks.values(),
       text: otu_labels,
       type: 'bar',
@@ -116,32 +116,43 @@ function buildCharts(sample) {
           x: result.otu_ids,
           y: result.sample_values,
           text: result.otu_labels,
+          hoverinfo: (otu_ids,sample_values),
           mode: "markers",
-          markers: {
-            size: [40,60,80,100],
-            sizemode: "area",
-            color: 'rgb(50, 119, 180)',
-            colorscale: 'YlOrRd'
-          }
+          marker: {
+            size: sample_values,
+            color: otu_ids,
+            colorscale: "jet"
+          },
+          
      }];
 
     // 2. Create the layout for the bubble chart.
     var bubbleLayout = {title: "Bacteria Cultures Per Sample",
-        xaxis: {title: "OTU IDs"}
-      
+        xaxis: {title: "OTU ID"},
+        hovermode: "closest",      
     };
 
     // 3. Use Plotly to plot the data with the layout.
     Plotly.newPlot("bubble", bubbleData, bubbleLayout); 
 
+
+
     // 4. Create the trace for the gauge chart.
     var gaugeData = [{		domain: { x: [0, 1], y: [0, 1] },
 		              value: freq,
-		              title: { text: "Belly Button Washing Frequency Scrubs Per Week"},
-		              type: "indicator",
+		              title: { text: "Belly Button Washing Frequency" + "<br>" + "Scrubs Per Week"},
+                  type: "indicator",
 		              mode: "gauge+number",
                   gauge: {
+                    bar: {color: "black"},
                     axis: { range: [null, 10], tickwidth: 1, tickcolor: "darkblue" },
+                    steps: [
+                      {range: [0,2], color:"red"},
+                      {range: [2,4], color:"orange"},
+                      {range: [4,6], color:"yellow"},
+                      {range: [6,8], color:"lightgreen"},
+                      {range: [8,10], color:"green"},
+                  ]
                   }
     }];
     

@@ -84,7 +84,7 @@ function buildCharts(sample) {
     console.log(otu_ids);
     console.log(otu_labels);
     console.log(sample_values);
-    console.log(typeof otu_ids);
+    
 
     // 3. Create a variable that holds the washing frequency.
     var freq = result2.wfreq;
@@ -94,13 +94,13 @@ function buildCharts(sample) {
     // Hint: Get the the top 10 otu_ids and map them in descending order  
     //  so the otu_ids with the most bacteria are last. 
 
-    var yticks = otu_ids.slice(0,10);
+    var yticks = otu_ids.slice(0,10).map(id => id).reverse();
     console.log(yticks);
     
     // 8. Create the trace for the bar chart. 
     var barData = [{
       x: sample_values.slice(0,10),
-      y: otu_ids.slice(0,10),
+      y: otu_ids.slice(0,10),//.sort((a,b) => b-a),
       text: otu_labels,
       type: 'bar',
       orientation: 'h'
@@ -110,23 +110,22 @@ function buildCharts(sample) {
     var barLayout = {title: "Top 10 Bacteria Samples Found",
           yaxis: {showticklabels: true,
           ticktext: yticks,
-          tickvals: yticks},                     
+          tickvals: yticks}                     
     };
     //10. Use Plotly to plot the data with the layout. 
     Plotly.newPlot("bar", barData, barLayout);
 
    // 1. Create the trace for the bubble chart.
     var bubbleData = [{type:"scatter",
-          x: result.otu_ids,
-          y: result.sample_values,
+          x: otu_ids,
+          y: sample_values,
           text: result.otu_labels,
           hoverinfo: (otu_ids,sample_values),
           mode: "markers",
           marker: {
             size: sample_values,
             color: otu_ids,
-            colorscale: "Electric",
-            showscale: true
+            colorscale: "Electric"
           },
           
      }];

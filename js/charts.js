@@ -106,6 +106,7 @@ function buildCharts(sample) {
       orientation: 'h'
           
     }];
+
     // 9. Create the layout for the bar chart. 
     var barLayout = {title: "Top 10 Bacteria Samples Found",
           yaxis: {showticklabels: true,

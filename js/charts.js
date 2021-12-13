@@ -84,8 +84,7 @@ function buildCharts(sample) {
     console.log(otu_ids);
     console.log(otu_labels);
     console.log(sample_values);
-    
-
+   
     // 3. Create a variable that holds the washing frequency.
     var freq = result2.wfreq;
     console.log(freq);
@@ -100,7 +99,7 @@ function buildCharts(sample) {
     // 8. Create the trace for the bar chart. 
     var barData = [{
       x: sample_values.slice(0,10),
-      y: otu_ids.slice(0,10),//.sort((a,b) => b-a),
+      y: otu_ids.slice(0,10),
       text: otu_labels,
       type: 'bar',
       orientation: 'h'
@@ -120,7 +119,7 @@ function buildCharts(sample) {
     var bubbleData = [{type:"scatter",
           x: otu_ids,
           y: sample_values,
-          text: result.otu_labels,
+          text: otu_labels,
           hoverinfo: (otu_ids,sample_values),
           mode: "markers",
           marker: {
